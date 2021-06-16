@@ -144,7 +144,7 @@ http://www.templatemo.com/tm-501-neaty
 
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <form action="#contact" method="post" class="contact-form">
+                                        <form onsubmit="sendMessage(this)" action='' class="contact-form">
                                             <div class="form-group">
                                                 <input type="text" id="contact_name" name="contact_name" class="form-control" placeholder="Name"  required/>
                                             </div>
@@ -156,6 +156,8 @@ http://www.templatemo.com/tm-501-neaty
                                             </div>                                            
                                             <button type="submit" class="float-right tm-button">Send</button>
                                         </form>    
+										<b id="response1" ></b><br>
+										<b id="response2" ></b>
                                     </div>
                                     
                                     <div class="col-lg-6 tm-contact-right">
@@ -186,13 +188,45 @@ http://www.templatemo.com/tm-501-neaty
         <script src="js/jquery.magnific-popup.min.js"></script>     <!-- Magnific pop-up (http://dimsemenov.com/plugins/magnific-popup/) -->
         <script src="js/jquery.singlePageNav.min.js"></script>      <!-- Single Page Nav (https://github.com/ChrisWojcik/single-page-nav) -->
         <script>
+		/*
+		if(location.search.substr(1).split("&").length==3){
+			//window.location.hash='contact';
+		}
+		*/
 		function takeMeTo(url){
 			window.open(
 			  url,
 			  '_blank' // <- This is what makes it open in a new window.
 			);
 		}
+		function sendMessage(form1) {
+		var name= form1.contact_name.value;
+		var email= form1.contact_email.value;
+		var msg= form1.contact_message.value;
+		params="?name="+name+"&email="+email+"&msg="+msg;
+		/*
+		  var xhttp = new XMLHttpRequest();
+		  xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+			 document.getElementById("response1").innerHTML = this.responseText;
+			}
+		  };
+		  
+		  	  
+		  xhttp.open("GET", "https://script.google.com/macros/s/AKfycbwsvgKG8lPzmcZLtXu1BPq_liUb2X4gtrZOSFg7fEYqkk05Lv4x2kK6FaG0JfoKy2pD/exec", true);
+		  xhttp.send();
+		  */
+		  var url="https://script.google.com/macros/s/AKfycbzp7BbmtlH12JGuQiMClmuswlxeR4fGvh0ScLX1scdtoudtsVaZOJ8163Xnk6DAEHmb/exec"+params;
+		  
+		   $.getJSON( url,function(returnValue){
+		   $("#response2").html(returnValue[0].status);
+		   });	  
+		  
+		  //document.getElementById("response1").innerHTML = "";
+		  event.preventDefault();
+		}
 		</script>
+		
 		<script>     
        
             $(document).ready(function(){
